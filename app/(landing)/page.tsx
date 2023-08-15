@@ -55,7 +55,7 @@ function App() {
 
       <section className="bg-blue-500 text-white py-16 text-center">
         <div className="container mx-auto">
-          <h2 className="text-3xl font-semibold mb-4">Ready to Experience AI's Potential?</h2>
+          <h2 className="text-3xl font-semibold mb-4">Ready to Experience AIs Potential?</h2>
           <p className="text-lg mb-8">Join us on a journey of innovation and discovery.</p>
           <a href="#" className="bg-white text-blue-500 hover:bg-blue-100 px-6 py-3 rounded-full font-semibold transition duration-300">Get Started</a>
         </div>
