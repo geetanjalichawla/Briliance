@@ -17,7 +17,9 @@ function DashboardLayout({
         </div>
         <div className='md:pl-64'>
             <Navbar/>
+            <div className='p-4 md:p-8'>
             {children}
+                </div>
         </div>
     </div>
   )
