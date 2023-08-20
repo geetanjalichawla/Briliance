@@ -2,7 +2,7 @@
 
 import * as z from 'zod'
 import Heading from '@/components/personal/Heading'
-import {  MessageSquare } from 'lucide-react';
+import {  ImageIcon } from 'lucide-react';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -12,36 +12,28 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { ChatCompletionRequestMessage } from 'openai';
 import Empty from '@/components/personal/empty';
 import { ClerkLoading } from '@clerk/nextjs';
 import { cn } from '@/lib/utils';
 import UserAvatar from '@/components/personal/userAvatar';
 import BotAvatar from '@/components/personal/BotAvatar';
-function ChatGptKaBhai() {
+function ImagePage() {
   const router =useRouter();
-  const [message, setMessage] = useState<ChatCompletionRequestMessage[]>([])
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:{
-      prompt: ""
+      prompt: "",
+      amount : "1",
+      resolution: "512×512"
     }
   })
-
+const [images, setImages] = useState<string []>([])
   const isLoading = form.formState.isSubmitting;
   const onSubmit =async (values:z.infer<typeof formSchema>) => {
     try {
-      const userMessage : ChatCompletionRequestMessage = {
-        role: 'user',
-        content: values.prompt
-      };
-
-      const newMessages = [...message, userMessage]
       const response = await axios.post('/api/conversation', {
-        message: newMessages
       });
 
-      setMessage((current)=>[...current, userMessage, response.data])
       form.reset();
     } catch (error:any) {
       //premium modal
@@ -54,7 +46,7 @@ function ChatGptKaBhai() {
     }
   return (
     <div>
-      <Heading  title={"Chat gpt ka bhai"} description='Sharmao mt puchlo jo puchna hai😄' icon={MessageSquare} iconColor='text-pink-500' bgColor='bg-pink-500/10'/>
+      <Heading  title={"Image Banao"} description='Sharmao mt Bana Lo Image' icon={ImageIcon} iconColor='text-violet-500' bgColor='bg-violet-500/10'/>
       <div className='px-4 lg:px-4'>
           <div>
             <Form {...form}>
@@ -66,7 +58,7 @@ function ChatGptKaBhai() {
                       <Input
                         className='border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent'
                         disabled={isLoading}
-                        placeholder='What is Computer?'
+                        placeholder='Tiger Image with Trees'
                         {...field}
                        />
                     </FormControl>
@@ -84,22 +76,11 @@ function ChatGptKaBhai() {
                 <ClerkLoading />
               </div>
             }
-         {message.length === 0  && !isLoading && <Empty label={'No conversation'}/>}
-            <div className='flex flex-col-reverse gap-y-4'>
-                  {
-                    message.map((msg)=><div key={msg.content}
-                    className={cn("p-8 w-full flex items-start gap-x-8 rounded-lg",
-                    msg.role ==='user'?"bg-white border border-black/10":"bg-muted"
-                    )}  
-                    >
-                   {
-                    msg.role === 'user'?
-                    <UserAvatar/>:
-                    <BotAvatar/>
-                   }  {msg.content}
-                    </div>)
-                  }
-            </div>
+         {images.length === 0  && !isLoading && <Empty label={'No Images Generated'}/>}
+
+<div>
+  image will be render here
+</div>
 
           </div>
       </div>
@@ -107,4 +88,4 @@ function ChatGptKaBhai() {
   )
 }
 
-export default ChatGptKaBhai
+export default ImagePage
